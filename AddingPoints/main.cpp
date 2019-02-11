@@ -16,6 +16,6 @@ int main() {
 
 	myPoints.sumExercise(newPoint);
 
-	system("pause");
+	//system("pause");
 	return 0;
 }

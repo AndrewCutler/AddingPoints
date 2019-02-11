@@ -15,6 +15,15 @@ void placeCursorAt(Point coordinate) {
 		coord);
 }
 
+void correctedPlaceCursorAt(Point coordinate) {
+	COORD coord;
+	coord.X = coordinate.getX() * 2;
+	coord.Y = 15 - coordinate.getY();
+	SetConsoleCursorPosition(
+		GetStdHandle(STD_OUTPUT_HANDLE),
+		coord);
+}
+
 //default constructor
 Points::Points() {
 	mPointArray[MAXPOINTS];
@@ -46,7 +55,7 @@ void Points::sumExercise(Point givenPoint) {
 	char play = 'y';
 	while ((play == 'y' || play == 'Y') && pointArrayIndex < 5) {
 		//place output under "plot"
-		Point bottomOfConsole(20, 20);
+		Point bottomOfConsole(20, 18);
 		placeCursorAt(bottomOfConsole);
 
 		//output points
@@ -67,20 +76,44 @@ void Points::sumExercise(Point givenPoint) {
 		Point sum = mPointArray[pointArrayIndex] + givenPoint;
 
 		//output points at proper coordinates
-		placeCursorAt(givenPoint);
+		correctedPlaceCursorAt(givenPoint);
 		cout << "A";
 
-		placeCursorAt(mPointArray[pointArrayIndex]);
+		correctedPlaceCursorAt(mPointArray[pointArrayIndex]);
 		cout << "B";
 
-		placeCursorAt(sum);
+		correctedPlaceCursorAt(sum);
 		cout << "C";
 
-		placeCursorAt(guessedPoint);
+		correctedPlaceCursorAt(guessedPoint);
 		cout << "?";
 
+		//draw x-axis increments
+		Point xAxis(0, 16);
+		for (int i = 1; i < 16; i++){
+			placeCursorAt(xAxis);
+			cout << "|";
+			xAxis.setX(i * 2);
+		}
+
+		//number x-axis
+		xAxis.setY(17), xAxis.setX(0);
+		for (int i = 2; i < 16; i += 2) {
+			placeCursorAt(xAxis);
+			cout << (i - 2);
+			xAxis.setX(i * 2);
+		}
+
+		//draw y-axis increments
+		Point yAxis(0, 1);
+		for (int i = 1; i < 16; i++) {
+			placeCursorAt(yAxis);
+			cout << "-";
+			yAxis.setY(i);
+		}
+
 		//place user prompts at bottom
-		bottomOfConsole.setY(23);
+		bottomOfConsole.setY(17);
 		placeCursorAt(bottomOfConsole);
 
 		//prompt user to play again
